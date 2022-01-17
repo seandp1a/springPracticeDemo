@@ -44,9 +44,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(this.secret);
-        System.out.println(new BCryptPasswordEncoder().encode("123123"));
+        System.out.println(passwordEncoder.encode("abcabc"));
         auth.jdbcAuthentication()
-                .passwordEncoder(new BCryptPasswordEncoder())
+                .passwordEncoder(passwordEncoder)
                 .dataSource(dataSource)
                 .usersByUsernameQuery(pwdQuery)
                 .authoritiesByUsernameQuery(roleQuery);
