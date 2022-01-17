@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +27,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     * 然而我們還沒有建立好授權機制，若使用 Postman 之類的工具發送請求，一律會收到 HTTP 401（Unauthorized）的狀態碼。
     */
     @Autowired
-    private UserDetailsService userDetailsService;
+    private DataSource dataSource = null;
+
+    @Value("$(system.user.password.secret)")
+    private String secret = null;
+
+    String pwdQuery = "select name ,password,access from user where name = ?";
+    String roleQuery = "select user.name,role.name from user ,role , user_role " +
+            "where user.id = user_role.user_id and role.id = user_role.role_id " +
+            "and user.name = ?";
 
     /**
      * 用來設定用戶登入服務，主要是user-detail機制，可以給予用戶賦予角色
@@ -31,16 +43,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("admin")
-                    .password(passwordEncoder.encode("abc"))
-                    .roles("USER","ADMIN")
-                .and()
-                .withUser("usong")
-                .password(passwordEncoder.encode("123456"))
-                .roles("USER");
+        PasswordEncoder passwordEncoder = new Pbkdf2PasswordEncoder(this.secret);
+        System.out.println(new BCryptPasswordEncoder().encode("123123"));
+        auth.jdbcAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .dataSource(dataSource)
+                .usersByUsernameQuery(pwdQuery)
+                .authoritiesByUsernameQuery(roleQuery);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Bean
+    public static NoOpPasswordEncoder passwordEncoder2() {
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 
     /**
