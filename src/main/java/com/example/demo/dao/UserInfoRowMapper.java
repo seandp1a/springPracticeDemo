@@ -13,6 +13,7 @@ public class UserInfoRowMapper implements RowMapper<UserInfo> {
         userInfo.setId(resultSet.getInt("id"));
         userInfo.setPassword(resultSet.getString("password"));
         userInfo.setName(resultSet.getString("name"));
+        userInfo.setAccesses(resultSet.getString("accesses"));
 
         return userInfo;
     }

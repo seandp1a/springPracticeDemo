@@ -4,6 +4,15 @@ public class UserInfo {
     Integer id;
     String password;
     String name;
+    String accesses;
+
+    public String getAccesses() {
+        return accesses;
+    }
+
+    public void setAccesses(String accesses) {
+        this.accesses = accesses;
+    }
 
     public Integer getId() {
         return id;

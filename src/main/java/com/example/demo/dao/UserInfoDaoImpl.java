@@ -19,7 +19,7 @@ public class UserInfoDaoImpl implements UserInfoDao{
 
     @Override
     public UserInfo getUserById(String userId) {
-        String sql = "SELECT id,password,name from user where id = :userId";
+        String sql = "SELECT id,password,name,accesses from user where id = :userId";
         Map<String,Object> map = new HashMap<>();
         map.put("userId",userId);
 
@@ -32,7 +32,7 @@ public class UserInfoDaoImpl implements UserInfoDao{
     }
 
     public UserInfo getUserByName(String userName){
-        String sql = "SELECT id,password,name from user where name = :userName";
+        String sql = "SELECT id,password,name,accesses from user where name = :userName";
         Map<String,Object> map = new HashMap<>();
         map.put("userName",userName);
 

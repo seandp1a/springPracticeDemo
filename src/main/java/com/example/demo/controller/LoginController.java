@@ -14,8 +14,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserInfo loginData){
-//        System.out.println(loginData);
-//        return "登入成功";
 
         UserInfo userInfo = new UserInfo();
         userInfo.setName(loginData.getName());

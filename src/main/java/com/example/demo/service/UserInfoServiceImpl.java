@@ -25,5 +25,8 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     private void authenticate(String userName,String userPassword){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, userPassword));
+        // 使用 new UsernamePasswordAuthenticationToken(name,pw) 會實作 UserDetailService 裡面的 loadUserByUsername(name)
+        // 此處詳見SpringUserService
+        // 同時也會
     }
 }
