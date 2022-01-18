@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import com.example.demo.Student;
+import com.example.demo.pojo.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

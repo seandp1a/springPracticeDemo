@@ -1,17 +1,17 @@
-package com.example.demo;
+package com.example.demo.pojo;
 
 public class UserInfo {
     Integer id;
     String password;
     String name;
-    String accesses;
+    String access;
 
-    public String getAccesses() {
-        return accesses;
+    public String getAccess() {
+        return access;
     }
 
-    public void setAccesses(String accesses) {
-        this.accesses = accesses;
+    public void setAccess(String accesses) {
+        this.access = accesses;
     }
 
     public Integer getId() {

@@ -1,10 +1,13 @@
 package com.example.demo.dao;
 
-import com.example.demo.UserInfo;
+import com.example.demo.pojo.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +17,20 @@ public class UserInfoDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    public class UserInfoRowMapper implements RowMapper<UserInfo> {
+        @Override
+        public UserInfo mapRow(ResultSet resultSet, int i) throws SQLException {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setId(resultSet.getInt("id"));
+            userInfo.setPassword(resultSet.getString("password"));
+            userInfo.setName(resultSet.getString("name"));
+            userInfo.setAccess(resultSet.getString("access"));
+            return userInfo;
+        }
+    }
+
     public UserInfo getUserById(String userId) {
-        String sql = "SELECT id,password,name,accesses from user where id = :userId";
+        String sql = "SELECT id,password,name,access from user where id = :userId";
         Map<String,Object> map = new HashMap<>();
         map.put("userId",userId);
 
@@ -28,7 +43,7 @@ public class UserInfoDao {
     }
 
     public UserInfo getUserByName(String userName){
-        String sql = "SELECT id,password,name,accesses from user where name = :userName";
+        String sql = "SELECT id,password,name,access from user where name = :userName";
         Map<String,Object> map = new HashMap<>();
         map.put("userName",userName);
 

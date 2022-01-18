@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.AuthData;
-import com.example.demo.UserInfo;
+import com.example.demo.pojo.AuthData;
+import com.example.demo.pojo.UserInfo;
 import org.springframework.stereotype.Component;
 
 @Component

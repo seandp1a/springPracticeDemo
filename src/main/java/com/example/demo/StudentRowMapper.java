@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.pojo.Student;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

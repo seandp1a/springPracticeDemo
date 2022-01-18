@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form action="/user/login" method="post">
+    user:<input type="text" name="username" id="username">
+    <!--  一定要叫做username, UsernamePasswordAuthenticationFilter 只認username&password這兩個名字  -->
+    <!--  UserDetailsService會用到UsernamePasswordAuthenticationFilter此過濾器  -->
+    <br>
+    password: <input type="password" name="password" id="password">
+    <br>
+    <input type="submit" value="login" />
+</form>
+</body>
+</html>

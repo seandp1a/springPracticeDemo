@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.Student;
+import com.example.demo.pojo.Student;
 import com.example.demo.dao.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
