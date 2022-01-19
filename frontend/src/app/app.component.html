@@ -1,0 +1,14 @@
+<div class="container mx-auto mt-3 flex px-5 items-center">
+
+  <button id="light" (click)="darkMode('off')" class="px-4 py-2 rounded-full bg-white border-gray-400 border-2">日間模式
+    <i class="fas fa-sun text-yellow-500"></i></button>
+  <button id="dark" (click)="darkMode('on')"
+    class="px-4 py-2 rounded-full bg-gray-700 border-gray-700 border-2 text-white">夜間模式<i
+      class="fas fa-moon text-yellow-500"></i></button>
+
+  <button class="btn-usong mx-2 mt-5" routerLink="/login">Login</button>
+  <button class="btn-usong mx-2 mt-5" routerLink="/home">Home</button>
+  <button class="btn-usong mx-2 mt-5" routerLink="/student">Students</button>
+</div>
+
+<router-outlet></router-outlet>
