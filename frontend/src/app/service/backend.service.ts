@@ -25,7 +25,7 @@ export class BackendService {
   }
 
   public getStudentDetail() {
-    return this.http.get<Data>('/api/USER/getStudentList');
+    return this.http.get<Data[]>('/api/USER/getStudentList');
   }
 
   public logOut() {

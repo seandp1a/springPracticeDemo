@@ -24,6 +24,7 @@ import java.util.Map;
 // securedEnabled 可以控制API需要那些角色才能拜訪 ;
 // prePostEnabled 適合進入方法前的權限驗證
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
@@ -40,8 +41,34 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /**
+         * 使用Spring Security 預設登入頁面
+         * 故不需要提供login的API給前端
+         * */
+        /*
+        http
+                .logout().logoutUrl("/api/logout").logoutSuccessUrl("/#/").permitAll();
+        http
+                .formLogin() // 啟用Spring Security預設登入頁面
+//                .loginPage("/index.html") // 自定義登入頁面設置
+                .loginProcessingUrl("/api/login") // 登入訪問路徑
+                .defaultSuccessUrl("/#/home").permitAll() // 登入後導向路徑
+                .and()
+                .authorizeRequests() // 設置那些request需要權限
+                .antMatchers(HttpMethod.GET,"/hasRootAuthority").hasAuthority("ROLE_ROOT") // 可不需ROLE_前綴
+                .antMatchers(HttpMethod.GET,"/hasRootAndUSERAuthority").hasAnyAuthority("ROLE_ROOT,ROLE_USER")
+                .antMatchers(HttpMethod.GET,"/hasRole").hasRole("USER") // hasRole 情況，拿來驗證的權限字串一定要有ROLE_前綴
+                .antMatchers(HttpMethod.GET,"/hasAnyRole").hasRole("ROOT,USER")
+                .anyRequest().permitAll() // 沒被設置的路徑.允許訪問
+                .and().anonymous() //對於沒配置權限的其他request，允許匿名訪問
+                .and().csrf().disable();
+        */
 
-        http.exceptionHandling()
+        /**
+         * 使用API方式登入 */
+
+        http
+                .exceptionHandling()
                 // 後面可接著設定 authenticationEntryPoint、accessDeniedHandler 把它換成我們自訂義的
                 .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .accessDeniedHandler(new AccessDeniedHandlerImpl())

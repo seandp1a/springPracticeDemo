@@ -11,7 +11,7 @@ export class StudentComponent implements OnInit {
   constructor(
     private backendSvc :BackendService
   ) { }
-  public data!:Data[];
+  public data:Data[] = [];
   public sortType: keyof Data = 'id';
   public sortReverse: boolean = false;
 
@@ -36,6 +36,7 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
     this.backendSvc.getStudentDetail().subscribe(res=>{
       console.log(res);
+      this.data = res;
     });
   }
 }
@@ -43,5 +44,5 @@ export interface Data {
   id: number,
   name: string,
   age:string,
-  created_at: string
+  create_date: string
 }

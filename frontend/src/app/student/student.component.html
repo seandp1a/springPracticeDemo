@@ -18,11 +18,16 @@
                     <span *ngIf="sortType==='name'">{{sortReverse?'▼':'▲'}}</span>
                   </span>
                 </th>
-
                 <th scope="col"
-                class="hover:underline px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <span class="cursor-pointer" (click)="changeSortType('created_at')">Create Time
-                    <span *ngIf="sortType==='created_at'">{{sortReverse?'▼':'▲'}}</span>
+                  class="hover:underline px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span class="cursor-pointer" (click)="changeSortType('age')">Age
+                    <span *ngIf="sortType==='age'">{{sortReverse?'▼':'▲'}}</span>
+                  </span>
+                </th>
+                <th scope="col"
+                  class="hover:underline px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <span class="cursor-pointer" (click)="changeSortType('create_date')">Create Time
+                    <span *ngIf="sortType==='create_date'">{{sortReverse?'▼':'▲'}}</span>
                   </span>
                 </th>
 
@@ -40,15 +45,16 @@
                       <div class="text-sm font-medium text-gray-900">
                         {{data.name}}
                       </div>
-                      <!-- <div class="text-sm text-gray-500">
-                        jane.cooper@example.com
-                      </div> -->
+
                     </div>
                   </div>
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{data.created_at}}
+                  {{data.age}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{data.create_date}}
                 </td>
 
 

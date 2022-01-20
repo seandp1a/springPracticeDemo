@@ -22,11 +22,10 @@ public class ApiController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")
 //    @PostAuthorize("hasAnyAuthority('ROLE_USER')")
 //    PreAuthorize 方法執行前驗證 / @PostAuthorize 方法執行後驗證
-    //    @PreFilter()
-    @PostFilter("filterObject.name=='Usong'")
-//     @PreFilter傳入方法資料過濾 / @PostFilter方法回傳資料過濾
+//    @PreFilter()
+//    @PostFilter("filterObject.name=='Usong'")
+//    @PreFilter傳入方法資料過濾 / @PostFilter方法回傳資料過濾
     public List<Student> getStudentList(){
-        System.out.println("read....");
         return studentService.getStudentList();
     }
 

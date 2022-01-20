@@ -11,7 +11,7 @@ export class AppComponent {
 
 
   darkMode(mode:string){
-    console.log(document.documentElement);
+    // console.log(document.documentElement);
     if(mode==='on'){
       document.documentElement.classList.add('dark');
     }else{

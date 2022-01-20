@@ -50,7 +50,7 @@ public class StudentDao {
     }
 
     public List<Student> getStudentList() {
-        String sql="select name FROM student";
+        String sql="select id, name , age,create_date FROM student";
         Map<String, Object> map = new ConcurrentHashMap<>();
         List<Student> list = namedParameterJdbcTemplate
                 .query(sql,map,new BeanPropertyRowMapper<>(Student.class));
