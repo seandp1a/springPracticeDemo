@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Data } from '../student/student.component';
 
 @Injectable({
@@ -10,6 +11,16 @@ export class BackendService {
   constructor(private http: HttpClient) {
 
   }
+  headers = new Headers({
+    'Content-Type': 'application/json',
+    'Authorization': ''
+  });
+
+  public getLatestHeader = new BehaviorSubject(this.headers);
+
+
+
+
   public loginUser(body: { username: String; password: String }) {
     // const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
     // const bodyString = `username=${body.name}&password=${body.password}`;
@@ -18,6 +29,9 @@ export class BackendService {
   }
 
   getRoot() {
+    this.getLatestHeader.subscribe((header)=>{
+
+    })
     return this.http.get('/hasRootAuthority', { responseType: 'text' });
   }
   getRootAndUser(){
