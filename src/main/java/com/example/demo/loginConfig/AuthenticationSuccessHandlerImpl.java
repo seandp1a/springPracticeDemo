@@ -1,6 +1,7 @@
 package com.example.demo.loginConfig;
 
 import com.example.demo.jwtConfig.JwtTokenUtil;
+import com.example.demo.service.LoginService;
 import com.example.demo.service.MyUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,6 +29,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     private final String LOGGED_IN = "logged_in";
     private final String USER_TYPE = "user_type";
 
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
@@ -37,14 +40,11 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
             this.jwtTokenUtil =new JwtTokenUtil();
         }
     }
-
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
         setJwtTokenUtil();
         // 不知道為什麼不能直接使用注入進來的bean
-        System.out.println(jwtTokenUtil);
+        System.out.println(req);
         String account = authentication.getName();
         Collection collection = authentication.getAuthorities();
         String authority = collection.iterator().next().toString();
@@ -52,8 +52,11 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         session.setAttribute(LOGGED_IN, account);
         session.setAttribute(USER_TYPE, authority);
 
+
         UserDetails userDetails=(UserDetails) authentication.getPrincipal();
         String token = jwtTokenUtil.generateToken(userDetails);
+        session.setAttribute("TOKEN",token);
+        session.setAttribute("redirectRefURL","index.html");
 
         Map<String, String> result = new HashMap<>();
         result.put("authority", authority);
@@ -61,12 +64,15 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
         result.put("token",token);
         resp.setContentType("application/json;charset=UTF-8");
         resp.setHeader("Authorization",token);
-        PrintWriter out = resp.getWriter();
-        resp.setStatus(200);
-        ObjectMapper om = new ObjectMapper();
-        out.write(om.writeValueAsString(result));
-        out.flush();
-        out.close();
+        resp.addHeader("Authorization",token);
+
+        resp.sendRedirect("/home");
+//        PrintWriter out = resp.getWriter();
+//        resp.setStatus(200);
+//        ObjectMapper om = new ObjectMapper();
+//        out.write(om.writeValueAsString(result));
+//        out.flush();
+//        out.close();
     }
     /*這個 Handler 就是專門處理當登入成功後，可以採取什麼動作。
     同時也可以利用 Authentication 物件取得 account、authority。

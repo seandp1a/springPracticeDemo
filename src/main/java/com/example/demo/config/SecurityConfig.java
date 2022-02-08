@@ -56,61 +56,63 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
          * 故不需要提供login的API給前端
          * */
 
-//        http
-//                .logout().logoutUrl("/api/logout").logoutSuccessUrl("/#/").permitAll();
-//        http
-//                .formLogin() // 啟用Spring Security預設登入頁面
-////                .loginPage("/index.html") // 自定義登入頁面設置
+        http
+                .logout().logoutUrl("/api/logout").logoutSuccessUrl("/#/").permitAll();
+        http
+                .formLogin() // 啟用Spring Security預設登入頁面
+//                .loginPage("/index.html") // 自定義登入頁面設置
 //                .loginProcessingUrl("/api/login") // 登入訪問路徑
-//                .defaultSuccessUrl("/#/home").permitAll() // 登入後導向路徑
-//                .and()
-//                .authorizeRequests() // 設置那些request需要權限
-//                .antMatchers(HttpMethod.GET,"/hasRootAuthority").hasAuthority("ROLE_ROOT") // 可不需ROLE_前綴
-//                .antMatchers(HttpMethod.GET,"/hasRootAndUSERAuthority").hasAnyAuthority("ROLE_ROOT,ROLE_USER")
-//                .antMatchers(HttpMethod.GET,"/hasRole").hasRole("USER") // hasRole 情況，拿來驗證的權限字串一定要有ROLE_前綴
-//                .antMatchers(HttpMethod.GET,"/hasAnyRole").hasRole("ROOT,USER")
-//                .anyRequest().permitAll() // 沒被設置的路徑.允許訪問
-//                .and().anonymous() //對於沒配置權限的其他request，允許匿名訪問
+                .successHandler(new AuthenticationSuccessHandlerImpl())
+//                .defaultSuccessUrl("/#/") // 登入後導向路徑
+                .and()
+                .authorizeRequests() // 設置那些request需要權限
+                .antMatchers(HttpMethod.GET,"/hasRootAuthority").hasAuthority("ROLE_ROOT") // 可不需ROLE_前綴
+                .antMatchers(HttpMethod.GET,"/hasRootAndUSERAuthority").hasAnyAuthority("ROLE_ROOT,ROLE_USER")
+                .antMatchers(HttpMethod.GET,"/hasRole").hasRole("USER") // hasRole 情況，拿來驗證的權限字串一定要有ROLE_前綴
+                .antMatchers(HttpMethod.GET,"/hasAnyRole").hasRole("ROOT,USER")
+                .anyRequest().authenticated() // 沒被設置的路徑.允許訪問
+                .and().anonymous() //對於沒配置權限的其他request，允許匿名訪問
 //                .and().csrf()
 //                .ignoringAntMatchers("/api/login","/api/logout")
 //                .csrfTokenRepository(this.getCsrfTokenRepository());
-//                .and().csrf().disable();
+                .and().csrf().disable();
 
         /**
          * 使用API方式登入 */
 
-        http
-                .csrf().disable()
-                .exceptionHandling()
-                // 後面可接著設定 authenticationEntryPoint、accessDeniedHandler 把它換成我們自訂義的
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .accessDeniedHandler(new AccessDeniedHandlerImpl())
-                .and()
-                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                //新增 filter，也就是把我們的 loginAuthenticationFilter 跟原始的 UsernamePasswordAuthenticationFilter 去做替換，才能實現我們想要的功能。
-//                .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests()
-                .antMatchers("/api/ROOT/**").hasRole("ROOT")
-                .antMatchers("/api/USER/**").hasRole("USER")
-                .antMatchers(HttpMethod.POST, "/api/getToken").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/parse").permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .logout()
-                .logoutUrl("/api/logout")
-                .invalidateHttpSession(true)
-                .logoutSuccessHandler((req, resp, auth) -> {
-                    resp.setContentType("application/json;charset=UTF-8");
-                    PrintWriter out = resp.getWriter();
-                    resp.setStatus(200);
-                    Map<String, String> result = Map.of("message", "登出成功");
-                    ObjectMapper om = new ObjectMapper();
-                    out.write(om.writeValueAsString(result));
-                    out.flush();
-                    out.close();
-                });
+//        http
+//                .csrf().disable()
+//                .exceptionHandling()
+//                // 後面可接著設定 authenticationEntryPoint、accessDeniedHandler 把它換成我們自訂義的
+//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+//                .accessDeniedHandler(new AccessDeniedHandlerImpl())
+//                .and()
+//                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                //新增 filter，也就是把我們的 loginAuthenticationFilter 跟原始的 UsernamePasswordAuthenticationFilter 去做替換，才能實現我們想要的功能。
+////                .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class)
+//                .authorizeRequests()
+//                .antMatchers("/api/ROOT/**").hasRole("ROOT")
+//                .antMatchers("/api/USER/**").hasRole("USER")
+//                .antMatchers(HttpMethod.POST, "/api/getToken").permitAll()
+//                .antMatchers(HttpMethod.POST, "/api/parse").permitAll()
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .logout()
+//                .logoutUrl("/api/logout")
+//                .invalidateHttpSession(true)
+//                .logoutSuccessHandler((req, resp, auth) -> {
+//                    resp.setContentType("application/json;charset=UTF-8");
+//                    PrintWriter out = resp.getWriter();
+//                    resp.setStatus(200);
+//                    Map<String, String> result = Map.of("message", "登出成功");
+//                    ObjectMapper om = new ObjectMapper();
+//                    out.write(om.writeValueAsString(result));
+//                    out.flush();
+//                    out.close();
+//                });
+
 //                .and().csrf().ignoringAntMatchers("/api/login","/api/logout").csrfTokenRepository(this.getCsrfTokenRepository());
 //                .and()
 
