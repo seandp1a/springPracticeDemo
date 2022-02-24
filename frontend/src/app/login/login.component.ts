@@ -1,3 +1,4 @@
+import { LoginService } from './../service/login.service';
 import { BackendService } from './../service/backend.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,7 +11,7 @@ export class LoginComponent implements OnInit {
   userName!: String;
   password!: String;
 
-  constructor(private backendSvc: BackendService) { }
+  constructor(private loginSvc:LoginService) { }
 
   doLogin() {
     // this.backendSvc.getRoot().subscribe(res=>{
@@ -21,9 +22,6 @@ export class LoginComponent implements OnInit {
       username: this.userName,
       password: this.password
     };
-    this.backendSvc.loginUser(body).subscribe(res=>{
-      console.log(res);
-    });
   }
 
   ngOnInit(): void {

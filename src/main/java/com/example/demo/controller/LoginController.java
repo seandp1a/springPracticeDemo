@@ -14,19 +14,7 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/hasRootAuthority")
-    @ResponseBody()
-    @Secured({"ROLE_ROOT"})
-    public String hasRootAuthority(){
-        return "ROOT access only!";
-    }
 
-    @GetMapping("/hasRootAndUserAuthority")
-    @ResponseBody()
-    @Secured({"ROLE_ROOT","ROLE_USER"})
-    public String hasRootAndUserAuthority(){
-        return "ROOT & USER access only!";
-    }
 
 
     @RequestMapping("/home")

@@ -34,10 +34,7 @@ export class StudentComponent implements OnInit {
     this.sortReverse = false;
   }
   ngOnInit(): void {
-    this.backendSvc.getStudentDetail().subscribe(res=>{
-      console.log(res);
-      this.data = res;
-    });
+
   }
 }
 export interface Data {
